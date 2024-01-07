@@ -1,0 +1,796 @@
+<!DOCTYPE html>   
+<html lang="en"> 
+<head>
+
+	<meta charset="utf-8">
+
+	<title>Jeu de bateau</title>
+
+	<style type="text/css">
+	#grid1{	
+		margin: 0 auto 0 auto;
+		margin-top: 60px;
+	}
+
+body{  background-image: url('background.jpg');}
+
+.grid2 {
+	
+	background-color: black;
+
+  height: 90px;
+  width: 90px;
+
+}
+#message{
+
+float: right;
+padding: 15px;
+background-color: rgb(19, 177, 19)	;
+
+}
+
+#reponse{
+position: absolute;
+padding: 30px;
+background-color: rgb(19, 177, 19)	;
+right: 0px;
+bottom: 0px;
+
+}
+
+.num{ padding: 10px;
+	
+color: white;}
+.alphabets{
+color: white;
+
+
+}
+
+
+	</style>
+
+</head>
+
+<body>
+
+<div id	="message"> </div>
+
+
+
+
+
+<div id="grid">
+<table id="grid1">
+
+
+<tr>     <td class="alphabets"> A </td>      <td class="grid2" id="A0"></td> <td  class="grid2" id="A1"></td> <td  class="grid2" id="A2"></td> <td  class="grid2" id="A3"></td> <td  class="grid2" id="A4"></td> <td  class="grid2" id="A5"></td> <td  class="grid2" id="A6"></td>   </tr>
+<tr>     <td class="alphabets"> B </td>      <td  class="grid2" id="B0"></td> <td class="grid2"  id="B1"></td> <td  class="grid2" id="B2"></td> <td  class="grid2" id="B3"></td> <td  class="grid2" id="B4"></td> <td  class="grid2" id="B5"></td> <td  class="grid2" id="B6"></td>   </tr>
+<tr>     <td class="alphabets"> C </td>      <td  class="grid2" id="C0"></td> <td  class="grid2" id="C1"></td> <td  class="grid2" id="C2"></td> <td  class="grid2" id="C3"></td> <td class="grid2"  id="C4"></td> <td  class="grid2" id="C5"></td> <td  class="grid2" id="C6"></td>   </tr>
+<tr>     <td class="alphabets"> D </td>      <td  class="grid2" id="D0"></td> <td  class="grid2" id="D1"></td> <td class="grid2"  id="D2"></td> <td class="grid2"  id="D3"></td> <td  class="grid2" id="D4"></td> <td  class="grid2" id="D5"></td> <td  class="grid2" id="D6"></td>   </tr>
+<tr>     <td class="alphabets"> E </td>      <td  class="grid2" id="E0"></td> <td  class="grid2" id="E1"></td> <td  class="grid2" id="E2"></td> <td  class="grid2" id="E3"></td> <td  class="grid2" id="E4"></td> <td  class="grid2" id="E5"></td> <td  class="grid2" id="E6"></td>   </tr>
+<tr>     <td class="alphabets"> F </td>      <td  class="grid2" id="F0"></td> <td  class="grid2" id="F1"></td> <td  class="grid2" id="F2"></td> <td  class="grid2" id="F3"></td> <td  class="grid2" id="F4"></td> <td  class="grid2" id="F5"></td> <td  class="grid2" id="F6"></td>   </tr>
+<tr>     <td class="alphabets"> G </td>      <td  class="grid2" id="G0"></td> <td  class="grid2" id="G1"></td> <td  class="grid2" id="G2"></td> <td class="grid2"  id="G3"></td> <td  class="grid2" id="G4"></td> <td  class="grid2" id="G5"></td> <td  class="grid2" id="G6"></td>   </tr>
+<tr>             <td> </td>  <td class="num"> 0 </td> <td class="num"> 1 </td> <td class="num"> 2 </td> <td class="num"> 3 </td> <td class="num"> 4 </td> <td class="num"> 5 </td> <td class="num"> 6 </td>      </tr>
+</table>
+</div>	
+  
+	<div id="reponse"> <input id="guess" type="text" placeholder="a0">   <button id="fire" >Fire!</button>
+	</div>
+
+	
+<script>
+
+var usedPositions=[];
+var usedInput=[];
+var attempts=0; //variable des essais
+var nbrBateauCoule=0;
+
+/* create the grid 7x7 */ 
+const length = 7;
+ const positions = new Array(length**2).fill(0);
+ //console.log(positions); 
+ 
+
+/* decalation bateau   	var bateau = {position1, position2 , position3, nbrtouche:0, coule:0 }; */
+
+/* create 3 bateaus in random positions */    
+var bateaus = [];
+for (var i=0;i<3;i++){
+	
+
+var position=generatePosition();
+
+
+var bateau = { position1:position, position2:position+1  , position3:position+2, nbrtouche:0, etat:0};
+
+bateaus.push(bateau);
+
+
+
+}
+console.log(bateaus);
+
+console.log(usedPositions);
+
+function generatePosition(){
+	
+	var position;
+	var a= Math.floor(Math.random()*7); 
+var b= Math.floor(Math.random()*5);
+//console.log(a,b);
+switch (true) {
+
+case (a===0&&b===0) :
+position=0;
+break;
+
+case (a===0&&b===1) :
+position=1;
+break;
+
+case (a===0&&b===2) :
+position=2;
+break;
+
+case (a===0&&b===3) :
+position=3;
+break;
+
+case (a===0&&b===4) :
+position=4;
+break;
+
+
+
+case (a===1&&b===0) :
+position=7;
+break;
+
+case (a===1&&b===1) :
+position=8;
+break;
+
+case (a===1&&b===2) :
+position=9;
+break;
+
+case (a===1&&b===3) :
+position=10;
+break;
+
+case (a===1&&b===4) :
+position=11;
+break;
+
+
+
+case (a===2&&b===0) :
+position=14;
+break;
+
+case (a===2&&b===1) :
+position=15;
+break;
+
+case (a===2&&b===2) :
+position=16;
+break;
+
+case (a===2&&b===3) :
+position=17;
+break;
+
+case (a===2&&b===4) :
+position=18;
+break;
+
+
+
+case (a===3&&b===0) :
+position=21;
+break;
+
+case (a===3&&b===1) :
+position=22;
+break;
+
+case (a===3&&b===2) :
+position=23;
+break;
+
+case (a===3&&b===3) :
+position=24;
+break;
+
+case (a===3&&b===4) :
+position=25;
+break;
+
+case (a===4&&b===0) :
+position=28;
+break;
+
+case (a===4&&b===1) :
+position=29;
+break;
+
+case (a===4&&b===2) :
+position=30;
+break;
+
+case (a===4&&b===3) :
+position=31;
+break;
+
+case (a===4&&b===4) :
+position=32;
+break;
+
+
+case (a===5&&b===0) :
+position=35;
+break;
+
+case (a===5&&b===1) :
+position=36;
+break;
+
+case (a===5&&b===2) :
+position=37;
+break;
+
+case (a===5&&b===3) :
+position=38;
+break;
+
+case (a===5&&b===4) :
+position=39;
+break;
+
+case (a===6&&b===0) :
+position=42;
+break;
+
+case (a===6&&b===1) :
+position=43;
+break;
+
+case (a===6&&b===2) :
+position=44;
+break;
+
+case (a===6&&b===3) :
+position=45;
+break;
+
+case (a===6&&b===4) :
+position=46;
+break;
+
+
+default:
+
+}
+
+if(usedPositions.includes(position) || usedPositions.includes(position+1) || usedPositions.includes(position+2) ) {  return generatePosition();       }
+
+else {
+usedPositions.push(position);
+usedPositions.push(position+1);
+usedPositions.push(position+2);
+
+
+
+return position; }
+
+}
+
+/* fill grid with positions */ 
+for(var i=0;i<3;i++){
+positions[bateaus[i].position1]=1;  
+positions[bateaus[i].position2]=1; 
+positions[bateaus[i].position3]=1;         }
+
+console.log(positions);
+
+
+/* take input and test it and return results */   
+var userPosition;
+
+document. getElementById("guess"). addEventListener("keyup", function(event) {
+if (event. keyCode === 13) {
+
+
+	var input = document.querySelector("#guess").value;
+	//console.log(input);
+	document.querySelector("#guess").value="";
+if( input.length===2 && ( input[0]==="a"  ||input[0]==="b"  ||input[0]==="c" ||
+input[0]==="d" ||input[0]==="e" ||input[0]==="f" ||input[0]==="g"  )
+&&  (input[1]==="0" || input[1]==="1" ||input[1]==="2" ||input[1]==="3" ||input[1]==="4" ||input[1]==="5" ||input[1]==="6") ) {
+
+
+if(usedInput.includes(input)) window.alert("Position déja utilisé"); 
+else{
+
+
+	console.log(input);
+
+usedInput.push(input);
+console.log(usedInput);
+
+
+/* Convert input to positions */
+
+switch(true){
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="0") : userPosition=0; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="1") : userPosition=1; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="2") : userPosition=2; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="3") : userPosition=3; break;
+	case( (input[0]==="A"|| input[0]==="a")  && input[1]==="4") : userPosition=4; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="5") : userPosition=5; break;
+	case( (input[0]==="A"|| input[0]==="a")  && input[1]==="6") : userPosition=6; break;
+
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="0") : userPosition=7; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="1") : userPosition=8; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="2") : userPosition=9; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="3") : userPosition=10; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="4") : userPosition=11; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="5") : userPosition=12; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="6") : userPosition=13; break;
+	
+
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="0") : userPosition=14; break;
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="1") : userPosition=15; break;
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="2") : userPosition=16; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="3") : userPosition=17; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="4") : userPosition=18; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="5") : userPosition=19; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="6") : userPosition=20; break;
+
+	case( (input[0]==="D" || input[0]==="d") && input[1]==="0") : userPosition=21; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="1") : userPosition=22; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="2") : userPosition=23; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="3") : userPosition=24; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="4") : userPosition=25; break;
+	case( (input[0]==="D"|| input[0]==="d") && input[1]==="5") : userPosition=26; break;
+	case( (input[0]==="D"|| input[0]==="d") && input[1]==="6") : userPosition=27; break;
+
+	case( (input[0]==="E"|| input[0]==="e") && input[1]==="0") : userPosition=28; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="1") : userPosition=29; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="2") : userPosition=30; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="3") : userPosition=31; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="4") : userPosition=32; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="5") : userPosition=33; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="6") : userPosition=34; break;
+
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="0") : userPosition=35; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="1") : userPosition=36; break;
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="2") : userPosition=37; break;
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="3") : userPosition=38; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="4") : userPosition=39; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="5") : userPosition=40; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="6") : userPosition=41; break;
+
+	case( (input[0]==="G" || input[0]==="g") && input[1]==="0") : userPosition=42; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="1") : userPosition=43; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="2") : userPosition=44; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="3") : userPosition=45; break;
+	case( (input[0]==="G"|| input[0]==="g") && input[1]==="4") : userPosition=46; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="5") : userPosition=47; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="6") : userPosition=48; break;
+
+
+}
+
+console.log(userPosition);
+
+
+/*test*/   if(positions[userPosition]===0) { document.getElementById("message").innerHTML += "Miss! <br>" ;
+attempts++; 
+
+console.log(input);
+
+
+
+
+
+
+
+switch (input){
+
+case ("a0") : document.getElementById("A0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a1") : document.getElementById("A1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a2") : document.getElementById("A2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a3") : document.getElementById("A3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a4") : document.getElementById("A4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a5") : document.getElementById("A5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a6") : document.getElementById("A6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("b0") : document.getElementById("B0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b1") : document.getElementById("B1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b2") : document.getElementById("B2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b3") : document.getElementById("B3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b4") : document.getElementById("B4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b5") : document.getElementById("B5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b6") : document.getElementById("B6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+
+case ("c0") : document.getElementById("C0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c1") : document.getElementById("C1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c2") : document.getElementById("C2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c3") : document.getElementById("C3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c4") : document.getElementById("C4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c5") : document.getElementById("C5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c6") : document.getElementById("C6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("d0") : document.getElementById("D0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d1") : document.getElementById("D1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d2") : document.getElementById("D2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d3") : document.getElementById("D3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d4") : document.getElementById("D4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d5") : document.getElementById("D5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d6") : document.getElementById("D6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("e0") : document.getElementById("E0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e1") : document.getElementById("E1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e2") : document.getElementById("E2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e3") : document.getElementById("E3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e4") : document.getElementById("E4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e5") : document.getElementById("E5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e6") : document.getElementById("E6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("f0") : document.getElementById("F0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f1") : document.getElementById("F1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f2") : document.getElementById("F2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f3") : document.getElementById("F3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f4") : document.getElementById("F4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f5") : document.getElementById("F5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f6") : document.getElementById("F6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("g0") : document.getElementById("G0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g1") : document.getElementById("G1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g2") : document.getElementById("G2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g3") : document.getElementById("G3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g4") : document.getElementById("G4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g5") : document.getElementById("G5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g6") : document.getElementById("G6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+}  
+
+
+}
+if(positions[userPosition]===1) {
+
+	document.getElementById("message").innerHTML += "Hit! <br>"; 
+attempts++;
+
+switch(input){
+
+	case ("a0") : document.getElementById("A0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a1") : document.getElementById("A1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a2") : document.getElementById("A2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a3") : document.getElementById("A3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a4") : document.getElementById("A4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a5") : document.getElementById("A5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a6") : document.getElementById("A6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("b0") : document.getElementById("B0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b1") : document.getElementById("B1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b2") : document.getElementById("B2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b3") : document.getElementById("B3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b4") : document.getElementById("B4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b5") : document.getElementById("B5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b6") : document.getElementById("B6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+
+case ("c0") : document.getElementById("C0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c1") : document.getElementById("C1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c2") : document.getElementById("C2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c3") : document.getElementById("C3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c4") : document.getElementById("C4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c5") : document.getElementById("C5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c6") : document.getElementById("C6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("d0") : document.getElementById("D0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d1") : document.getElementById("D1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d2") : document.getElementById("D2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d3") : document.getElementById("D3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d4") : document.getElementById("D4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d5") : document.getElementById("D5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d6") : document.getElementById("D6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("e0") : document.getElementById("E0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e1") : document.getElementById("E1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e2") : document.getElementById("E2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e3") : document.getElementById("E3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e4") : document.getElementById("E4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e5") : document.getElementById("E5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e6") : document.getElementById("E6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("f0") : document.getElementById("F0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f1") : document.getElementById("F1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f2") : document.getElementById("F2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f3") : document.getElementById("F3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f4") : document.getElementById("F4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f5") : document.getElementById("F5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f6") : document.getElementById("F6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("g0") : document.getElementById("G0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g1") : document.getElementById("G1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g2") : document.getElementById("G2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g3") : document.getElementById("G3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g4") : document.getElementById("G4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g5") : document.getElementById("G5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g6") : document.getElementById("G6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+
+}
+
+
+for (var j=0; j<3;j++){ if(bateaus[j].position1===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position1=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += "Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné!  essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");}} } 
+if(bateaus[j].position2===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position2=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += "Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné!  essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");} } }
+if(bateaus[j].position3===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position3=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += "Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné!  essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");} } }
+}
+
+}
+
+
+}
+}
+else {  window.alert("position invalide!"); }
+
+}
+});
+
+
+
+var fireButton = document.querySelector("#fire");
+
+fireButton.addEventListener('click',function(){
+	
+	var input = document.querySelector("#guess").value;
+	//console.log(input);
+	document.querySelector("#guess").value="";
+if( input.length===2 && ( input[0]==="a"  ||input[0]==="b"  ||input[0]==="c" ||
+input[0]==="d" ||input[0]==="e" ||input[0]==="f" ||input[0]==="g"  )
+&&  (input[1]==="0" || input[1]==="1" ||input[1]==="2" ||input[1]==="3" ||input[1]==="4" ||input[1]==="5" ||input[1]==="6") ) {
+
+
+if(usedInput.includes(input)) window.alert("Position déja utilisé"); 
+else{
+
+
+	console.log(input);
+
+usedInput.push(input);
+console.log(usedInput);
+
+
+/* Convert input to positions */
+
+switch(true){
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="0") : userPosition=0; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="1") : userPosition=1; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="2") : userPosition=2; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="3") : userPosition=3; break;
+	case( (input[0]==="A"|| input[0]==="a")  && input[1]==="4") : userPosition=4; break;
+	case( (input[0]==="A" || input[0]==="a") && input[1]==="5") : userPosition=5; break;
+	case( (input[0]==="A"|| input[0]==="a")  && input[1]==="6") : userPosition=6; break;
+
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="0") : userPosition=7; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="1") : userPosition=8; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="2") : userPosition=9; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="3") : userPosition=10; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="4") : userPosition=11; break;
+	case( (input[0]==="B" || input[0]==="b") && input[1]==="5") : userPosition=12; break;
+	case( (input[0]==="B"|| input[0]==="b")  && input[1]==="6") : userPosition=13; break;
+	
+
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="0") : userPosition=14; break;
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="1") : userPosition=15; break;
+	case( (input[0]==="C" || input[0]==="c") && input[1]==="2") : userPosition=16; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="3") : userPosition=17; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="4") : userPosition=18; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="5") : userPosition=19; break;
+	case( (input[0]==="C"|| input[0]==="c")  && input[1]==="6") : userPosition=20; break;
+
+	case( (input[0]==="D" || input[0]==="d") && input[1]==="0") : userPosition=21; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="1") : userPosition=22; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="2") : userPosition=23; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="3") : userPosition=24; break;
+	case( (input[0]==="D" || input[0]==="d")&& input[1]==="4") : userPosition=25; break;
+	case( (input[0]==="D"|| input[0]==="d") && input[1]==="5") : userPosition=26; break;
+	case( (input[0]==="D"|| input[0]==="d") && input[1]==="6") : userPosition=27; break;
+
+	case( (input[0]==="E"|| input[0]==="e") && input[1]==="0") : userPosition=28; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="1") : userPosition=29; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="2") : userPosition=30; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="3") : userPosition=31; break;
+	case( (input[0]==="E"|| input[0]==="e")  && input[1]==="4") : userPosition=32; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="5") : userPosition=33; break;
+	case( (input[0]==="E" || input[0]==="e") && input[1]==="6") : userPosition=34; break;
+
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="0") : userPosition=35; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="1") : userPosition=36; break;
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="2") : userPosition=37; break;
+	case( (input[0]==="F" || input[0]==="f") && input[1]==="3") : userPosition=38; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="4") : userPosition=39; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="5") : userPosition=40; break;
+	case( (input[0]==="F"|| input[0]==="f")  && input[1]==="6") : userPosition=41; break;
+
+	case( (input[0]==="G" || input[0]==="g") && input[1]==="0") : userPosition=42; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="1") : userPosition=43; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="2") : userPosition=44; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="3") : userPosition=45; break;
+	case( (input[0]==="G"|| input[0]==="g") && input[1]==="4") : userPosition=46; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="5") : userPosition=47; break;
+	case( (input[0]==="G" || input[0]==="g")&& input[1]==="6") : userPosition=48; break;
+
+
+}
+
+console.log(userPosition);
+
+
+/*test*/   if(positions[userPosition]===0) { document.getElementById("message").innerHTML += "Miss! <br>" ;
+attempts++; 
+
+console.log(input);
+switch (input){
+
+case ("a0") : document.getElementById("A0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a1") : document.getElementById("A1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a2") : document.getElementById("A2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a3") : document.getElementById("A3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a4") : document.getElementById("A4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a5") : document.getElementById("A5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("a6") : document.getElementById("A6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("b0") : document.getElementById("B0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b1") : document.getElementById("B1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b2") : document.getElementById("B2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b3") : document.getElementById("B3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b4") : document.getElementById("B4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b5") : document.getElementById("B5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("b6") : document.getElementById("B6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+
+case ("c0") : document.getElementById("C0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c1") : document.getElementById("C1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c2") : document.getElementById("C2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c3") : document.getElementById("C3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c4") : document.getElementById("C4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c5") : document.getElementById("C5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("c6") : document.getElementById("C6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("d0") : document.getElementById("D0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d1") : document.getElementById("D1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d2") : document.getElementById("D2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d3") : document.getElementById("D3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d4") : document.getElementById("D4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d5") : document.getElementById("D5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("d6") : document.getElementById("D6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("e0") : document.getElementById("E0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e1") : document.getElementById("E1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e2") : document.getElementById("E2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e3") : document.getElementById("E3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e4") : document.getElementById("E4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e5") : document.getElementById("E5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("e6") : document.getElementById("E6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("f0") : document.getElementById("F0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f1") : document.getElementById("F1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f2") : document.getElementById("F2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f3") : document.getElementById("F3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f4") : document.getElementById("F4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f5") : document.getElementById("F5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("f6") : document.getElementById("F6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+case ("g0") : document.getElementById("G0").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g1") : document.getElementById("G1").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g2") : document.getElementById("G2").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g3") : document.getElementById("G3").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g4") : document.getElementById("G4").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g5") : document.getElementById("G5").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+case ("g6") : document.getElementById("G6").innerHTML="<img src=\"miss.jpg\" alt=\"miss\">"; break;
+
+}
+
+
+}
+if(positions[userPosition]===1) {
+
+	document.getElementById("message").innerHTML += "Hit! <br>"; 
+attempts++;
+
+switch(input){
+
+	case ("a0") : document.getElementById("A0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a1") : document.getElementById("A1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a2") : document.getElementById("A2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a3") : document.getElementById("A3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a4") : document.getElementById("A4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a5") : document.getElementById("A5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("a6") : document.getElementById("A6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("b0") : document.getElementById("B0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b1") : document.getElementById("B1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b2") : document.getElementById("B2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b3") : document.getElementById("B3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b4") : document.getElementById("B4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b5") : document.getElementById("B5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("b6") : document.getElementById("B6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+
+case ("c0") : document.getElementById("C0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c1") : document.getElementById("C1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c2") : document.getElementById("C2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c3") : document.getElementById("C3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c4") : document.getElementById("C4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c5") : document.getElementById("C5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("c6") : document.getElementById("C6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("d0") : document.getElementById("D0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d1") : document.getElementById("D1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d2") : document.getElementById("D2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d3") : document.getElementById("D3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d4") : document.getElementById("D4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d5") : document.getElementById("D5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("d6") : document.getElementById("D6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("e0") : document.getElementById("E0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e1") : document.getElementById("E1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e2") : document.getElementById("E2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e3") : document.getElementById("E3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e4") : document.getElementById("E4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e5") : document.getElementById("E5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("e6") : document.getElementById("E6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("f0") : document.getElementById("F0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f1") : document.getElementById("F1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f2") : document.getElementById("F2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f3") : document.getElementById("F3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f4") : document.getElementById("F4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f5") : document.getElementById("F5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("f6") : document.getElementById("F6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+case ("g0") : document.getElementById("G0").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g1") : document.getElementById("G1").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g2") : document.getElementById("G2").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g3") : document.getElementById("G3").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g4") : document.getElementById("G4").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g5") : document.getElementById("G5").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+case ("g6") : document.getElementById("G6").innerHTML="<img src=\"bateau.jpg\" alt=\"bateau\">"; break;
+
+
+}
+
+
+for (var j=0; j<3;j++){ if(bateaus[j].position1===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position1=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += " Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné!  essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");}} } 
+if(bateaus[j].position2===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position2=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += "Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné! essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");} } }
+if(bateaus[j].position3===userPosition) { bateaus[j].nbrtouche++; bateaus[j].position3=0; positions[userPosition]=0;   if(bateaus[j].nbrtouche===3){bateaus[j].etat=1; document.getElementById("message").innerHTML += "Tu as coulé mon bateau! <br>"; nbrBateauCoule++; if(nbrBateauCoule ===3) {window.alert(" Tu as Gagné!  essais:"+attempts+" Performance: "+Math.floor(9*100/attempts)+"%");} } }
+}
+
+}
+
+
+}
+}
+else {  window.alert("position invalide!"); }
+
+
+});
+
+/* tout les bateau coulé = gagné */   // if(nbrBateauCoule ===3) document.write("Tu as Gagné!"); afficher();
+/* calculer & show performance */   
+
+
+
+</script>
+
+
+</body>
+</html>
